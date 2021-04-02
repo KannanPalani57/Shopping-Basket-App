@@ -1,4 +1,3 @@
-import { calculateBill } from "../actions/billActions"
 
 export function calculateSpecialPrizes(foodData){
     const breed = foodData[0];
