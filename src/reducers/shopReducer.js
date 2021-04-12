@@ -1,8 +1,7 @@
 import { 
-    CART_ADD_ITEM,
     ADD_SHOPPING_ITEM,
     DECREASE_SHOPPING_ITEM    
-} from "../constants/shopConstants"
+} from "../constants/constants"
 import { calculateSpecialPrizes } from "../helpers/shoppingHelpers";
 
 
@@ -41,20 +40,35 @@ export let foodData = [
         sellingRate: 1.20,
         ratePerQuantity: 1.20,
         quantity: 0,
+    },
+    {
+        totalPrice: 0,
+        subTotal: 0,
+        savings: 0,
+        breedSavings: 0,
+        cheeseSavings: 0,
     }
 ]
 
 export const shopReducer = (state = foodData, {type, payload}) => {
     switch(type){
         case ADD_SHOPPING_ITEM:
+            console.log(payload)
             state.forEach(item => {
                 if(item.id === parseInt(payload)){
                     item["quantity"] = item["quantity"] + 1
                     item["ratePerQuantity"] = item["quantity"] * item["sellingRate"]
                 }
             })
-
-            calculateSpecialPrizes(state);
+            const calculatedMoney = calculateSpecialPrizes(state);
+            state[state.length-1] = {
+                savings: calculatedMoney.savings,
+                totalPrice: calculatedMoney.totalPrice,
+                subTotal: calculatedMoney.subTotal,
+                cheeseSavings: calculatedMoney.cheeseSavings,
+                breedSavings: calculatedMoney.cheeseSavings
+            }
+            // state.push(rateDetails)
             return [...state];
         case DECREASE_SHOPPING_ITEM:
             state.forEach(item => {
@@ -63,8 +77,8 @@ export const shopReducer = (state = foodData, {type, payload}) => {
                     item["ratePerQuantity"] = item["quantity"] * item["sellingRate"]
                 }
             })
-            return [...state];            
-
+           calculateSpecialPrizes(state);
+           return [...state];            
         default: 
             return state;    
     }

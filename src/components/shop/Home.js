@@ -15,6 +15,7 @@ import AddIcon from '@material-ui/icons/Add';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import Divider from '@material-ui/core/Divider';
 
+
 const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -39,23 +40,23 @@ const useStyles = makeStyles((theme) => ({
   }));
   
 
-
-const Foods = () => {
+const Home = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const foods = useSelector(state => state.shoppingItems)
+    const foods = useSelector(state => state.shoppingItems.slice(0,5))
+    console.log(foods)
     const addShoppingItem = (data) => dispatch(addShoppingItemAction(data))
     const [dense, setDense] = React.useState(false);
     const [secondary, setSecondary] = React.useState(false);
 
-    const handleAddBtnClick = (event) =>{
-        event.preventDefault();
-        addShoppingItem(event.target.id)
-    }
+    const handleAddBtnClick = (e, id) =>{
+        e.preventDefault();
+        addShoppingItem(id)
+    }                
     
     return (
         <div className = "ml-5 mt-5">
-             <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6}>
           <Typography variant="h6" className={classes.title}>
             Foods
           </Typography>
@@ -73,12 +74,12 @@ const Foods = () => {
                                 </ListItemAvatar>
                                 <ListItemText classes = {{primary:classes.styleItemText}}
                                 primary= {`${food.foodName}`}
-                                secondary={true ? food.sellingRate : null}
+                                secondary={true ? "Item Price : £" + food.sellingRate : null}
                                 />
                                 <ListItemSecondaryAction>
-                                <IconButton edge="end" aria-label="add">
+                                <IconButton onClick = {(e) => handleAddBtnClick(e, food.id)} edge="end" aria-label="add">
                                     <Avatar className = {classes.styleAvatar}>
-                                       <AddIcon className = {classes.styleIcon} id = {food.id} onClick = {handleAddBtnClick}/>
+                                       <AddIcon className = {classes.styleIcon} />
                                     </Avatar>
                                 </IconButton>
                                 </ListItemSecondaryAction>
@@ -103,4 +104,4 @@ const Foods = () => {
     )
 }
 
-export default Foods;
+export default Home;
