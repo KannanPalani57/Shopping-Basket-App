@@ -1,6 +1,3 @@
-import { addSomething } from "../actions/calculationActions";
-import { SAVE_CALCULATION } from "../constants/constants";
-import store from "../store"
 
 export const calculateSpecialPrizes = foodData  => {
 
@@ -13,40 +10,46 @@ export const calculateSpecialPrizes = foodData  => {
     var totalPrice = 0, subTotal = 0, savings = 0;
     var breedSavings = 0;
     var cheeseSavings = 0;
+
+        console.log(breed)
+        totalPrice += breed.quantity * breed.sellingRate + milk.quantity * milk.sellingRate + cheese.quantity * cheese.sellingRate + soup.quantity * soup.sellingRate + butter.quantity * butter.sellingRate;
+        subTotal += breed.quantity * breed.sellingRate + milk.quantity * milk.sellingRate + cheese.quantity * cheese.sellingRate + soup.quantity * soup.sellingRate + butter.quantity * butter.sellingRate;
+
         // Buy a soup and two breads – only one bread should be reduced
         if(soup.quantity === 1 && breed.quantity === 2){
-             totalPrice = soup.ratePerQuantity + breed.ratePerQuantity - breed.sellingRate;
+             totalPrice = totalPrice - breed.sellingRate;
              breedSavings = breed.sellingRate
-             subTotal = totalPrice + savings;
+             savings += breedSavings;
+             subTotal = totalPrice + breedSavings;
         }
         //  buy three, one free cheese
         if(cheese.quantity === 4){       
-                totalPrice += 3 * cheese.sellingRate;
+                totalPrice = totalPrice - cheese.sellingRate;
                 cheeseSavings = cheese.sellingRate; 
-                subTotal += 4 * cheese.sellingRate;
+                savings += cheeseSavings;
+                subTotal = totalPrice + cheese.sellingRate;
         }
         //buy four cheese, two free
         if(cheese.quantity === 6){       
-            totalPrice += 4 * cheese.sellingRate;
+            totalPrice = totalPrice - 2 * cheese.sellingRate;
             cheeseSavings = 2 * cheese.sellingRate;
-            subTotal += 6 * cheese.sellingRate;
+            savings += cheeseSavings;
+            subTotal = totalPrice + 2 * cheese.sellingRate;
         }
        //buy a cheese, you get a second cheese free
        if(cheese.quantity ===  2){
-            totalPrice += cheese.sellingRate;
+            totalPrice = totalPrice - cheese.sellingRate;
             cheeseSavings =  cheese.sellingRate;
-            subTotal += 2 * cheese.sellingRate;
+            savings += cheeseSavings;
+            subTotal = totalPrice + cheese.sellingRate;
        }
         //when you buy a soup and breed, you get a half price bread
        if(soup.quantity === 1 &&  breed.quantity === 1){
-            totalPrice += soup.sellingRate + breed.sellingRate / 2;
+            totalPrice = totalPrice - breed.sellingRate / 2;
             breedSavings = breed.sellingRate / 2;
-            subTotal += soup.sellingRate + breed.sellingRate
+            savings += breedSavings;
+            subTotal = totalPrice + breed.sellingRate / 2;
        }
-    //    else{
-    //         totalPrice += breed.ratePerQuantity + milk.ratePerQuantity + cheese.ratePerQuantity + soup.ratePerQuantity + butter.ratePerQuantity;
-    //         subTotal += breed.ratePerQuantity + milk.ratePerQuantity + cheese.ratePerQuantity + soup.ratePerQuantity + butter.ratePerQuantity;
-    //     } 
        
         return {
             totalPrice,

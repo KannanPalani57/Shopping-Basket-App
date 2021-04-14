@@ -1,7 +1,6 @@
 import React from "react";
 import { addShoppingItemAction } from "../../actions/shopActions"
 import { useDispatch, useSelector } from "react-redux"
-import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -14,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import Divider from '@material-ui/core/Divider';
+import { makeStyles } from '@material-ui/core/styles';
+import Snackbar from '@material-ui/core/Snackbar';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.background.paper,
     },
     title: {
+      textAlign: "center",
       margin: theme.spacing(4, 0, 2),
     },
     styleIcon: {
@@ -36,6 +38,11 @@ const useStyles = makeStyles((theme) => ({
     },
     styleItemText: {
         fontSize: "1.25rem",
+    },
+    iconBtn: {
+     "&:disabled": {
+       color: "red"
+     }
     }
   }));
   
@@ -44,28 +51,38 @@ const Home = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const foods = useSelector(state => state.shoppingItems.slice(0,5))
-    console.log(foods)
-    const addShoppingItem = (data) => dispatch(addShoppingItemAction(data))
-    const [dense, setDense] = React.useState(false);
-    const [secondary, setSecondary] = React.useState(false);
+    const addShoppingItem = (data) => dispatch(addShoppingItemAction(data))  
+    const [state, setState] = React.useState({
+      open: false,
+      vertical: 'bottom',
+      horizontal: 'right',
+    });
+  
+    const { vertical, horizontal, open } = state;
+    
+    const handleClose = () => {
+      setState({ ...state, open: false });
+    };
 
-    const handleAddBtnClick = (e, id) =>{
+    const handleAddBtnClick = (e, id, newState) =>{
         e.preventDefault();
         addShoppingItem(id)
+        setState({ open: true, ...newState });
+
     }                
     
     return (
-        <div className = "ml-5 mt-5">
+        <div className = "flex justify-center ml-5 mt-5">
         <Grid item xs={12} md={6}>
           <Typography variant="h6" className={classes.title}>
             Foods
-          </Typography>
+          </Typography> 
           <div className={classes.products}>
-          <List dense={dense}>
+          <List >
             {
                 foods && foods.map(food => {
                     return (
-                        <>
+                        <div key = {food.id}>
                             <ListItem>
                                 <ListItemAvatar>
                                     <Avatar className = {classes.styleAvatar}>
@@ -75,9 +92,12 @@ const Home = () => {
                                 <ListItemText classes = {{primary:classes.styleItemText}}
                                 primary= {`${food.foodName}`}
                                 secondary={true ? "Item Price : £" + food.sellingRate : null}
-                                />
+                         
+                         />
                                 <ListItemSecondaryAction>
-                                <IconButton onClick = {(e) => handleAddBtnClick(e, food.id)} edge="end" aria-label="add">
+                                <IconButton 
+                                classes={{root: classes.iconBtn, cldisabled: classes.iconBtnDisabled}}
+                                onClick={(e) => handleAddBtnClick(e, food.id, { vertical: 'bottom', horizontal: 'right' })} edge="end" aria-label="add">
                                     <Avatar className = {classes.styleAvatar}>
                                        <AddIcon className = {classes.styleIcon} />
                                     </Avatar>
@@ -85,7 +105,7 @@ const Home = () => {
                                 </ListItemSecondaryAction>
                             </ListItem>
                             <Divider variant="inset" component="li" />
-                        </>
+                        </div>
                         // <div key = {food.id}>
                         //     <div className = "flex space-x-12">
                         //         <p className = "text-xl my-5">{food.foodName}</p>
@@ -99,7 +119,13 @@ const Home = () => {
             </List>
           </div>
         </Grid>
-
+        <Snackbar
+          anchorOrigin={{ vertical, horizontal }}
+          open={open}
+          onClose={handleClose}
+          message="Item added to the Basket, Please click the Basket to see the food!"
+          key={vertical + horizontal}
+         />
         </div>
     )
 }
