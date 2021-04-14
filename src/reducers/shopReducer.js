@@ -47,6 +47,7 @@ export let foodData = [
         savings: 0,
         breedSavings: 0,
         cheeseSavings: 0,
+        butterSavings: 0,
     }
 ]
 
@@ -68,6 +69,7 @@ export const shopReducer = (state = foodData, {type, payload}) => {
             }
             state[0]['breedSavings'] = calculatedMoney.breedSavings;
             state[2]['cheeseSavings'] = calculatedMoney.cheeseSavings;
+            state[4]['butterSavings'] = calculatedMoney.butterSavings;
             // state.push(rateDetails)
             return [...state];
         case DECREASE_SHOPPING_ITEM:
@@ -82,9 +84,10 @@ export const shopReducer = (state = foodData, {type, payload}) => {
                 savings: calculatedMoneyAfterDecrement.savings,
                 totalPrice: calculatedMoneyAfterDecrement.totalPrice,
                 subTotal: calculatedMoneyAfterDecrement.subTotal,
-                cheeseSavings: calculatedMoneyAfterDecrement.cheeseSavings,
-                breedSavings: calculatedMoneyAfterDecrement.breedSavings
             }
+            state[0]['breedSavings'] = calculatedMoneyAfterDecrement.breedSavings;
+            state[2]['cheeseSavings'] = calculatedMoneyAfterDecrement.cheeseSavings;
+            state[4]['butterSavings'] = calculatedMoneyAfterDecrement.butterSavings;
            return [...state];            
         default: 
             return state;    

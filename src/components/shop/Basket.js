@@ -5,6 +5,7 @@ import {
     decreaseShoppingItemAction 
 } from "../../actions/shopActions";
 import React from 'react';
+import { capitalizeFirstLetter } from "../../helpers/makeFirstLetterCaps"
 
 const Basket = () => {
     const dispatch = useDispatch();
@@ -23,10 +24,7 @@ const Basket = () => {
         decreaseShoppingItem(event.target.id)
     }
 
-    function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
-
+   
     return (
         <div>
             
@@ -47,6 +45,7 @@ const Basket = () => {
                                 <h3 className="lg: ml:20 text-xl ">Item Price £{food.sellingRate} * {food.quantity} = £{food.ratePerQuantity.toFixed(1)}</h3>
                                  {   food.breedSavings && food.breedSavings !==0? <h1 className="text-green-800">Savings: {food.breedSavings}</h1>:"" }
                                  { food.cheeseSavings && food.cheeseSavings !==0?<h1 className="text-green-800">Savings: {food.cheeseSavings}</h1>:"" }
+                                 { food.butterSavings && food.butterSavings !==0?<h1 className="text-green-800">Savings: {food.butterSavings}</h1>:"" }
                                 <h3 className="lg: text-xl ">Item Cost = £{food.ratePerQuantity.toFixed(1)}</h3>
                                 <hr />
                         </div>

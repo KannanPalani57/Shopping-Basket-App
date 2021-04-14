@@ -15,7 +15,7 @@ import FastfoodIcon from '@material-ui/icons/Fastfood';
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
-
+import { capitalizeFirstLetter } from "../../helpers/makeFirstLetterCaps"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -90,7 +90,7 @@ const Home = () => {
                                     </Avatar>
                                 </ListItemAvatar>
                                 <ListItemText classes = {{primary:classes.styleItemText}}
-                                primary= {`${food.foodName}`}
+                                primary= {`${capitalizeFirstLetter(food.foodName)}`}
                                 secondary={true ? "Item Price : £" + food.sellingRate : null}
                          
                          />

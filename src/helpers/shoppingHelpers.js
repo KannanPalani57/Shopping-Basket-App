@@ -10,10 +10,13 @@ export const calculateSpecialPrizes = foodData  => {
     var totalPrice = 0, subTotal = 0, savings = 0;
     var breedSavings = 0;
     var cheeseSavings = 0;
+    var butterSavings = 0;
 
-        console.log(breed)
-        totalPrice += breed.quantity * breed.sellingRate + milk.quantity * milk.sellingRate + cheese.quantity * cheese.sellingRate + soup.quantity * soup.sellingRate + butter.quantity * butter.sellingRate;
+        totalPrice += breed.quantity * breed.sellingRate + milk.quantity * milk.sellingRate + cheese.quantity * cheese.sellingRate + soup.quantity * soup.sellingRate + butter.quantity * butter.sellingRate - butter.quantity * butter.sellingRate * 33/100;
         subTotal += breed.quantity * breed.sellingRate + milk.quantity * milk.sellingRate + cheese.quantity * cheese.sellingRate + soup.quantity * soup.sellingRate + butter.quantity * butter.sellingRate;
+        butterSavings = butter.quantity * butter.sellingRate * 33/100;
+        savings += butterSavings;
+        console.log(savings)
 
         // Buy a soup and two breads – only one bread should be reduced
         if(soup.quantity === 1 && breed.quantity === 2){
@@ -50,13 +53,20 @@ export const calculateSpecialPrizes = foodData  => {
             savings += breedSavings;
             subTotal = totalPrice + breed.sellingRate / 2;
        }
-       
+       //get a third butter off
+//        if(butter.quantity ===  3){
+//         totalPrice = totalPrice - butter.sellingRate;
+//         butterSavings =  butter.sellingRate;
+//         savings += butterSavings;
+//         subTotal = totalPrice + butter.sellingRate;
+//    }
         return {
             totalPrice,
             savings,
             subTotal,
             breedSavings,
-            cheeseSavings
+            cheeseSavings,
+            butterSavings
         }         
            
 
